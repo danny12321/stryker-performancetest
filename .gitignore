@@ -1,0 +1,5 @@
+dist
+.vscode
+output
+package-lock.json
+node_modules
