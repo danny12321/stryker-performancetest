@@ -46,7 +46,7 @@ export class Package {
             
             run_exec.on('close', (code) => {
                 const end_time = new Date();
-                this.run_duration.push(end_time.getTime() - start_time.getTime());
+                this.run_duration.push((end_time.getTime() - start_time.getTime()) / 1000);
 
                 res({
                     start_time: start_time,

@@ -21,7 +21,7 @@ const packages = settings.paths.map(p => new Package(p, settings.command, path.r
 				let output = '';
 				const result = await packageRun.run();
 
-				await copyFile(`${packageRun.cwd}/reports/mutation/mutation.json`, `output/${dir}/${packageRun.packageName}_${i}.json`);
+				// await copyFile(`${packageRun.cwd}/reports/mutation/mutation.json`, `output/${dir}/${packageRun.packageName}_${i}.json`);
 				await copyFile(`${packageRun.cwd}/reports/mutation/html/index.html`, `output/${dir}/${packageRun.packageName}_${i}.html`);
 
 
@@ -39,8 +39,14 @@ const packages = settings.paths.map(p => new Package(p, settings.command, path.r
 		fs.appendFileSync(summaryFile, `\n\nAveraged time\n`);
 
 		packages.forEach(p => {
-			fs.appendFileSync(summaryFile, `${p.packageName} averaged ${average(p.run_duration) / 1000} seconds in ${p.run_duration.length} runs\n`)
+			fs.appendFileSync(`output/${dir}/times.json`, `${p.packageName} averaged ${average(p.run_duration)} seconds in ${p.run_duration.length} runs\n`)
 		});
+
+		fs.writeFileSync('times.json', JSON.stringify(packages.map(p => ({
+			package: p.packageName,
+			durations: p.run_duration
+		}))));
+
 
 	} catch (e) {
 		console.error(e);
